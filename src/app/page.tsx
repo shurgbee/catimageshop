@@ -6,7 +6,8 @@ export default function Home() {
   return (
     <>
       <h1 className="text-9xl py-3">Welcome In!</h1>
-      <MainPageCarousel/>
+      <MainPageCarousel title="New In Shop" ctype="new"/>
+      <MainPageCarousel title="Leaving Soon! 🔥" ctype="leaving"/>
     </>
   );
 }

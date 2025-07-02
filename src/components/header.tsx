@@ -9,7 +9,7 @@ export default function Header() {
         <a href="/" className="p-2">
             <FontAwesomeIcon icon={faCat}/>
         </a>
-        <a href="/" className="">
+        <a href="/" className="p-2">
             <FontAwesomeIcon icon={faShoppingCart} className=""/>
         </a>
     </div>

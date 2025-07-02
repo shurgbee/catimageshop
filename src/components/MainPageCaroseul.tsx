@@ -1,24 +1,34 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { ShoppingCard } from "../components/ShoppingCard"
+import { ShoppingCard } from "./ShoppingCard"
 
-export default function Header() {
-  const iterarr = [1,2,3,4,5]
+type CarouselType = "leaving" | "new" | "cheap" | "expensive"
+
+interface CarouselProps{
+  title: string
+  ctype: CarouselType
+}
+
+
+export default function MainPageCaroseul({ title, ctype }:CarouselProps) {
+  const iterarr = [1,2,3,4,5,6,7,8]
   return (
-      <div>
-      <h3 className="text-6xl text-red-600 py-3">Leaving Fast</h3>
-      <div className="w-[95vw]">
-      <Carousel className="ml-20 space-x-4 align-middle">
-        <CarouselPrevious className=""/>
-        <CarouselContent className="*:text-blue-400 *:bg-blue-300 :p-4 *:text-xl *:justify center  w-fit">
-          {iterarr.map( (_,index) => 
-          <CarouselItem className="basis-1/3" key={index}>
+    <>
+      <div className="py-8">
+      <h3 className={(ctype == "leaving" ? "text-red-600 " : "") + " text-6xl pb-6"}>{title}</h3>
+      <div className="w-[90vw] place-self-center">
+      <Carousel className="space-x-4 align-middle -ml-4">
+        <CarouselPrevious className="max-sm:hidden"/>
+        <CarouselContent className="*:text-blue-400 :p-4 *:text-xl *:justify center  w-fit">
+          {iterarr.map( (_,index,length) => 
+          <CarouselItem className="basis-1/6" key={index}>
             <ShoppingCard/>
           </CarouselItem>
           )}
         </CarouselContent>
-        <CarouselNext />
+        <CarouselNext className="max-sm:hidden"/>
       </Carousel>
       </div>
       </div>
+    </>
   );
 }

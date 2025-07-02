@@ -21,13 +21,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "./ui/button";
+import { autocomplete } from "@/app/autocomplete";
+import { AutoCompleteProps } from "@/app/autocomplete"
 
 export default function Header() {
   const [value, setValue] = useState("");
-  const [open, setOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [open, setOpen] = useState(true);
+  const [searchRes, setSearchRes] = useState<AutoCompleteProps[]>([])
 
-  function Autocomplete(text: string){
-    console.log(text)
+  async function Autocomplete(text: string){
+    const resp = await autocomplete(text)
+    console.log(resp)
+    setSearchRes(resp)
   }
 
   const frameworks = [
@@ -58,44 +64,47 @@ export default function Header() {
         <a href="/" className="p-2">
             <FontAwesomeIcon icon={faCat}/>
         </a>
+        <Command className="w-[50vw]">
+          <CommandInput
+           onFocus={() => setOpen(true)}
+           value={searchText}
+           onValueChange={(text) => {
+            setSearchText(text);
+            Autocomplete(text);
+           }} 
+           placeholder="Search Stuff Here"
+           
+           />
           <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-[200px] justify-between"
-                  >
-                    {value
-                      ? frameworks.find((framework) => framework.value === value)?.label
-                      : "Select framework..."}
-                  </Button>
+                <PopoverTrigger>
+
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
+                <PopoverContent className="w-[50vw] p-0">
                     <CommandList>
-                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandEmpty>No Search Results Found :(</CommandEmpty>
                       <CommandGroup>
-                        {frameworks.map((framework) => (
+                        {searchRes.map((result, index) => (
                           <CommandItem
-                            key={framework.value}
-                            value={framework.value}
+                            key={index}
+                            value={result.name}
                             onSelect={(currentValue) => {
-                              setValue(currentValue === value ? "" : currentValue)
+                              setSearchText(currentValue === value ? "" : currentValue)
                               setOpen(false)
                             }}
                           >
-                            {framework.label}
+                            {result.name}
                           </CommandItem>
                         ))}
                       </CommandGroup>
                     </CommandList>
-                  </Command>
                 </PopoverContent>
               </Popover>
+        </Command>
         <a href="/" className="p-2">
             <FontAwesomeIcon icon={faShoppingCart} className=""/>
         </a>
     </div>
   );
 }
+
+

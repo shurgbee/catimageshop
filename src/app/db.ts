@@ -19,7 +19,8 @@ export interface ItemProps{
     price: string,
     description: string | null,
     stock: number,
-    dateuploaded: string
+    dateuploaded: string,
+    id: string
 }
 
 export async function autocomplete(text: string) : Promise<AutoCompleteProps[]> {
@@ -41,7 +42,23 @@ export async function populateItemPage(id: string) : Promise<ItemProps> {
         price: shoppingitems.price,
         description: shoppingitems.description,
         stock: shoppingitems.stock,
-        dateuploaded: shoppingitems.dateuploaded 
+        dateuploaded: shoppingitems.dateuploaded,
+        id: shoppingitems.id
+    }).from(shoppingitems).where(ilike(sql`${shoppingitems.id}::text`, `%${id}%`)).limit(1);
+    console.log("items: "+items)
+    return items[0];
+} 
+
+export async function populateCaroseul() : Promise<ItemProps> {
+    const items: ItemProps[] = await db.select({
+        name: shoppingitems.name,
+        image: shoppingitems.image,
+        rating: shoppingitems.rating,
+        price: shoppingitems.price,
+        description: shoppingitems.description,
+        stock: shoppingitems.stock,
+        dateuploaded: shoppingitems.dateuploaded,
+        id: shoppingitems.id
     }).from(shoppingitems).where(ilike(sql`${shoppingitems.id}::text`, `%${id}%`)).limit(1);
     console.log("items: "+items)
     return items[0];

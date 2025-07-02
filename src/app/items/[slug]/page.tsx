@@ -4,6 +4,11 @@ import { ShoppingCard } from "../../../components/ShoppingCard"
 import MainPageCarousel from "../../../components/MainPageCaroseul"
 import { ItemProps, populateItemPage } from "@/app/db";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Main } from "next/document";
+import { ShoppingButton } from "@/components/ShoppingButton";
 
 export default function ItemPage({
   params,
@@ -32,7 +37,31 @@ export default function ItemPage({
         <h1 className="text-8xl font-black py-3">This is where da items are</h1>
       </>
       :
-      <p>{item?.name}</p>
+      <>
+        <div className="flex flex-row">
+          <img src={item?.image ? item.image : "https://cdn.gcdn.space/Guests/d42ca99e_floppa.webp"} className="h-2xl w-2xl rounded-4xl p-5"/>
+          <div className="flex flex-col gap-5">
+            <p className="text-9xl font-black">{item?.name}</p>
+            {
+              item?.description ? 
+                <p className="text-lg">{item?.description ? item.description : ""}</p>
+              :
+              <></>
+            }
+            <div className="flex flex-row">
+              <p className="text-7xl font-bold">${item?.price}</p>
+              {/* <p className="self-center">Increase amount</p> */}
+            </div>
+            <div className="flex flex-row gap-9">
+              <p className="text-3xl">{"Stock: "+item?.stock}</p>
+              <ShoppingButton id={item?.id}/>
+            </div>
+          </div>
+        </div>
+      <div className="pt-[10vh]">
+        <MainPageCarousel title={"More like this one"} ctype={"new"}/>
+      </div>
+      </>
     }
     </>
   );

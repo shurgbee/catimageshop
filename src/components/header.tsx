@@ -24,6 +24,7 @@ import { Button } from "./ui/button";
 import { autocomplete } from "@/app/db";
 import { AutoCompleteProps } from "@/app/db"
 import { redirect, RedirectType } from "next/navigation";
+import { Badge } from "./ui/badge";
 
 export default function Header() {
   const [value, setValue] = useState("");
@@ -36,29 +37,6 @@ export default function Header() {
     console.log(resp)
     setSearchRes(resp)
   }
-
-  const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
 
   return (
     <div className="flex flex-row w-screen bg-blue-600 min-h-9vh text-6xl items-center p-10vh text-white justify-between gap-5">

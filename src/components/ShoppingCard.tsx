@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image"
+import { ShoppingButton } from "./ShoppingButton"
 
 interface CardProps {
     image: string,
@@ -26,10 +27,6 @@ interface CardProps {
 
 
 export function ShoppingCard({ image, name, rating, price, id }:CardProps) {
-
-    function ShoppingButton(){
-        window.alert("Added to Cart!")
-    }
   return (
     <Card className="max-w-xs p-5">
             <a href={"/items/"+id} className="font-bold text-2xl justify-self-center truncate hover:underline">
@@ -42,10 +39,7 @@ export function ShoppingCard({ image, name, rating, price, id }:CardProps) {
                         <p className="font-semibold">{rating}</p>
                     </div>
                     <p className="font-black text-5xl self-center">${price}</p>
-                    <Button className="self-center" onClick={() => ShoppingButton()}>
-                        <p className="inline">Add to Cart</p>
-                        <FontAwesomeIcon icon={faCartPlus}></FontAwesomeIcon>
-                    </Button>
+                    <ShoppingButton id={id} />
             </div>
     </Card>
   )

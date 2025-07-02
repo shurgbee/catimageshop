@@ -21,8 +21,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "./ui/button";
-import { autocomplete } from "@/app/autocomplete";
-import { AutoCompleteProps } from "@/app/autocomplete"
+import { autocomplete } from "@/app/db";
+import { AutoCompleteProps } from "@/app/db"
+import { redirect, RedirectType } from "next/navigation";
 
 export default function Header() {
   const [value, setValue] = useState("");
@@ -65,6 +66,7 @@ export default function Header() {
             <FontAwesomeIcon icon={faCat}/>
         </a>
         <Command className="w-[50vw]">
+          <form onSubmit={() => console.log("hi")}>
           <CommandInput
            onFocus={() => setOpen(true)}
            value={searchText}
@@ -73,13 +75,15 @@ export default function Header() {
             Autocomplete(text);
            }} 
            placeholder="Search Stuff Here"
-           
            />
+          </form>
           <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger>
 
                 </PopoverTrigger>
-                <PopoverContent className="w-[50vw] p-0">
+                <PopoverContent
+                className="w-[50vw] p-0"
+                onOpenAutoFocus={(e) => e.preventDefault()}>
                     <CommandList>
                       <CommandEmpty>No Search Results Found :(</CommandEmpty>
                       <CommandGroup>
@@ -88,8 +92,9 @@ export default function Header() {
                             key={index}
                             value={result.name}
                             onSelect={(currentValue) => {
-                              setSearchText(currentValue === value ? "" : currentValue)
-                              setOpen(false)
+                              setSearchText(currentValue);
+                              setOpen(false);
+                              redirect("/items/"+result.id, RedirectType.replace)
                             }}
                           >
                             {result.name}

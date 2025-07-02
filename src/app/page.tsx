@@ -5,7 +5,7 @@ import MainPageCarousel from "../components/MainPageCaroseul"
 export default function Home() {
   return (
     <>
-      <h1 className="text-9xl py-3">Welcome In!</h1>
+      <h1 className="text-8xl font-black py-3">Welcome In!</h1>
       <MainPageCarousel title="New In Shop" ctype="new"/>
       <MainPageCarousel title="Leaving Soon! 🔥" ctype="leaving"/>
     </>

@@ -18,10 +18,15 @@ export default function MainPageCaroseul({ title, ctype }:CarouselProps) {
       <div className="w-[90vw] place-self-center">
       <Carousel className="space-x-4 align-middle -ml-4">
         <CarouselPrevious className="max-sm:hidden"/>
-        <CarouselContent className="*:text-blue-400 :p-4 *:text-xl *:justify center  w-fit">
+        <CarouselContent className="*:text-blue-400 *:text-xl *:justify center ">
           {iterarr.map( (_,index,length) => 
-          <CarouselItem className="basis-1/6" key={index}>
-            <ShoppingCard/>
+          <CarouselItem className="md:basis-1/4 sm:basis-1/2" key={index}>
+            <ShoppingCard
+            name={"Chippi Chappa"}
+            image={"https://hc-cdn.hel1.your-objectstorage.com/s/v3/21e1090efd1da6fa6b37a178617af9237fc139b2_image.png"}
+            price={23}
+            rating={4}
+            />
           </CarouselItem>
           )}
         </CarouselContent>

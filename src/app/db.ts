@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { ilike, and, gt, sql, desc, asc } from 'drizzle-orm';
-import { shoppingitems } from '../../drizzle/schema';
+import { shoppingitems } from '../db/schema';
 import { AutoCompleteProps, CarouselType, ItemProps } from './types';
 
 const db = drizzle(process.env.DATABASE_URL!);
@@ -34,7 +34,7 @@ export async function getItemFromID(id: string) : Promise<ItemProps> {
 } 
 
 export async function populateCarousel(carouselType: CarouselType) : Promise<ItemProps[]> {
-    var items: ItemProps[] = []
+    let items: ItemProps[] = []
     switch(carouselType) {
         case CarouselType.leavingSoon:
             items = await db.select({

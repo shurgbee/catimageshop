@@ -1,6 +1,5 @@
 import MainPageCarousel from "../components/MainPageCaroseul";
 import { CarouselType } from "./types";
-import { populateCarousel } from "./db";
 
 export default function Home() {
 

@@ -1,34 +1,27 @@
 'use client'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCat } from "@fortawesome/free-solid-svg-icons/faCat";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { Input } from "@/components/ui/input"
 import { useState } from "react";
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Button } from "./ui/button";
 import { autocomplete } from "@/app/db";
 import { AutoCompleteProps } from "../app/types"
 import { redirect, RedirectType } from "next/navigation";
-import { Badge } from "./ui/badge";
 import ShoppingCart from "./ShoppingCart";
+import Link from "next/link";
 
 export default function Header() {
-  const [value, setValue] = useState("");
   const [searchText, setSearchText] = useState("");
   const [open, setOpen] = useState(false);
   const [searchRes, setSearchRes] = useState<AutoCompleteProps[]>([])
@@ -41,9 +34,9 @@ export default function Header() {
 
   return (
     <div className="flex flex-row w-auto bg-blue-600 min-h-9vh text-6xl items-center p-10vh text-white justify-between gap-5">
-        <a href="/" className="p-2">
+        <Link href="/" className="p-2">
             <FontAwesomeIcon icon={faCat}/>
-        </a>
+        </Link>
         <Command className="w-[50vw]">
           <form onSubmit={() => console.log("hi")}>
           <CommandInput

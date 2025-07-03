@@ -4,8 +4,6 @@ import { ShoppingCard } from "./ShoppingCard"
 import { CarouselType, ItemProps, CarouselProps } from "../app/types";
 import { populateCarousel } from "@/app/db";
 import { useEffect, useState} from "react";
-import { Skeleton } from "./ui/skeleton";
-import { Card, CardContent } from "./ui/card";
 import { CarouselPlaceholder } from "./CarouselPlaceholder";
 
 

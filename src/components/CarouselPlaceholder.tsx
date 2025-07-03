@@ -1,21 +1,8 @@
 'use client'
-import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image"
-import { ShoppingButton } from "./ShoppingButton"
 import { CarouselItem } from "./ui/carousel"
 import { Skeleton } from "./ui/skeleton"
 

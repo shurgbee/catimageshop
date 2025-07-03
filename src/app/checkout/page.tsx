@@ -1,6 +1,4 @@
 'use client'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { ShoppingCard } from "../../components/ShoppingCard"
 import { useEffect, useState } from "react";
 import { getItemFromID} from "../db";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -10,7 +8,7 @@ import { faTrashCan, faBasketShopping, faPlus, faMinus } from "@fortawesome/free
 import { Skeleton } from "@/components/ui/skeleton";
 import { ItemProps } from '../types'
 import { toast } from "sonner";
-import { preconnect } from "react-dom";
+import Link from "next/link";
 
 export default function Checkout() {
   const [loading, setLoading] = useState(true)
@@ -21,7 +19,7 @@ export default function Checkout() {
       setLoading(true);
       const curCart : string | null = localStorage.getItem("CISCart")
       let preCart: Map<string, number> = new Map();
-      if (curCart != "{}") {
+      if (curCart && curCart!= "{}" ) {
         preCart = new Map(Object.entries(JSON.parse(curCart).items));
       }
       setCart(preCart)
@@ -33,10 +31,10 @@ export default function Checkout() {
       console.log(items)
     }
     fetchItem();
-  }, [] );
+  }, []);
 
   function finalPrice(){
-    var fprice: number = 0
+    let fprice: number = 0
     if(items && cart) items?.map((item) => fprice += parseFloat(item.price) * (cart?.get(item.id) ?? 0))
     console.log(fprice)
     return fprice;
@@ -51,8 +49,8 @@ export default function Checkout() {
       newCart.set(id, oldInt + incrementVal)
       setCart(newCart)
       const currentCartStr = localStorage.getItem("CISCart")
-      if (currentCartStr) var currentCart = JSON.parse(currentCartStr)
-      if(currentCart != null) {
+      const currentCart = JSON.parse(currentCartStr ?? "")
+      if(currentCart && currentCart != "{}") {
         currentCart['items'] = Object.fromEntries(newCart)
         currentCart['totalCount'] += incrementVal
       }
@@ -68,8 +66,8 @@ export default function Checkout() {
     newCart.delete(id)
     setCart(newCart)
     const currentCartStr = localStorage.getItem("CISCart")
-    if (currentCartStr) var currentCart = JSON.parse(currentCartStr)
-    if(currentCart != null) {
+    const currentCart = JSON.parse(currentCartStr ?? "")
+    if(currentCart && currentCart != "{}") {
       currentCart['items'] = Object.fromEntries(newCart)
       currentCart['totalCount'] -= idCount ?? 0
     }
@@ -99,10 +97,12 @@ export default function Checkout() {
                   .map((item, index) => (
                     <Card key={index} className="flex flex-row items-center">
                       {item.image ? (
-                        <img
-                          src={item.image}
-                          className="h-[90] w-[160] pl-2 rounded-3xl"
-                        />
+                          <img
+                            src={item.image}
+                            width={180}
+                            height={320}
+                            className="max-h-[90] max-w-[160] pl-2 "
+                          />
                       ) : (
                         <></>
                       )}
@@ -148,7 +148,7 @@ export default function Checkout() {
             </>
           ) : (
             <p className="font-bold text-3xl text-center">
-              No Items in Cart! <a href="/" className="hover:underline">Get to shopping</a>
+              No Items in Cart! <Link href="/" className="hover:underline">Get to shopping</Link>
             </p>
           )
         ) : (

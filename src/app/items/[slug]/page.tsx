@@ -20,7 +20,7 @@ export default function ItemPage({
       setLoading(true);
       const { slug } = await params;
       const realItem = await getItemFromID(slug);
-      setItem(realItem);
+      if(realItem) setItem(realItem);
       setLoading(false);
     }
     fetchItem();
@@ -65,7 +65,9 @@ export default function ItemPage({
             </div>
             <div className="flex flex-row gap-9">
               <p className="text-3xl">{"Stock: "+item?.stock}</p>
-              <ShoppingButton id={item?.id} name={item.name}/>
+              {item?.id && item?.name ? 
+                <ShoppingButton id={item?.id} name={item.name}/>
+                :<></>}
             </div>
           </div>
         </div>

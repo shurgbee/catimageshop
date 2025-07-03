@@ -15,6 +15,11 @@ export interface ItemProps{
     id: string
 }
 
+export interface CartType{
+    totalCount: number,
+    items: { [key: string]: number}
+}
+
 export enum CarouselType{
     new,
     leavingSoon

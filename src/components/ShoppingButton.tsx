@@ -4,14 +4,14 @@ import {toast } from 'sonner'
 import { Button } from "@/components/ui/button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { shoppingButtonType } from '@/app/types';
+import { CartType, shoppingButtonType } from '@/app/types';
 
 
 
 export function ShoppingButton({id, name}: shoppingButtonType) {
     function ButtonFunc(id: string){
         const cart = localStorage.getItem("CISCart");
-        let parsedCart: { [key: string]: any } = cart ? JSON.parse(cart) : {};
+        const parsedCart: CartType = cart ? JSON.parse(cart) : {};
         if (!parsedCart.totalCount) parsedCart.totalCount = 0;
         if (!parsedCart['items']) parsedCart['items'] = {};
         if (parsedCart['items'][id]) {

@@ -5,6 +5,7 @@ import Header from "../components/header";
 
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import { Toaster } from "@/components/ui/sonner";
 config.autoAddCss = false
 
 const geistSans = Geist({
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <Header/>
           {children}
+      <Toaster richColors/>
       </body>
     </html>
   );

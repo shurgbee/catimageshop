@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faBasketShopping, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ItemProps } from '../types'
+import { toast } from "sonner";
+import { preconnect } from "react-dom";
 
 export default function Checkout() {
   const [loading, setLoading] = useState(true)
@@ -19,7 +21,7 @@ export default function Checkout() {
       setLoading(true);
       const curCart : string | null = localStorage.getItem("CISCart")
       let preCart: Map<string, number> = new Map();
-      if (curCart) {
+      if (curCart != "{}") {
         preCart = new Map(Object.entries(JSON.parse(curCart).items));
       }
       setCart(preCart)
@@ -72,6 +74,15 @@ export default function Checkout() {
       currentCart['totalCount'] -= idCount ?? 0
     }
     localStorage.setItem('CISCart', JSON.stringify(currentCart))
+    console.log(newCart)
+        window.dispatchEvent( new CustomEvent("CIScartChanged"))
+  }
+
+  function CheckoutButton(){
+    toast.success("Successfully checked out cart for $"+finalPrice())
+    const newCart = new Map()
+    setCart(newCart)
+    localStorage.setItem('CISCart', JSON.stringify(newCart))
     console.log(newCart)
         window.dispatchEvent( new CustomEvent("CIScartChanged"))
   }
@@ -128,7 +139,7 @@ export default function Checkout() {
                   ))}
               </CardContent>
               <CardFooter className="flex flex-row-reverse">
-                <Button size="xl">
+                <Button size="xl" onClick={CheckoutButton}>
                   <p className="text-xl">Checkout</p>
                   <FontAwesomeIcon size="2xl" icon={faBasketShopping} />
                 </Button>

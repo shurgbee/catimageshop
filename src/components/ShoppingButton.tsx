@@ -1,15 +1,14 @@
 
 'use client'
+import {toast } from 'sonner'
 import { Button } from "@/components/ui/button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { shoppingButtonType } from '@/app/types';
 
 
-interface stupidType{
-    id: string
-}
 
-export function ShoppingButton({id}: stupidType) {
+export function ShoppingButton({id, name}: shoppingButtonType) {
     function ButtonFunc(id: string){
         const cart = localStorage.getItem("CISCart");
         let parsedCart: { [key: string]: any } = cart ? JSON.parse(cart) : {};
@@ -23,6 +22,7 @@ export function ShoppingButton({id}: stupidType) {
         parsedCart.totalCount += 1;
         localStorage.setItem("CISCart", JSON.stringify(parsedCart))
         window.dispatchEvent( new CustomEvent("CIScartChanged"))
+        toast.info(`Item "${name}" was added to cart"`)
     }
   return (
         <Button className="self-center" size="lg" onClick={() => ButtonFunc(id)}>

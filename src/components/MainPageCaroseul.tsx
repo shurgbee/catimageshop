@@ -3,16 +3,22 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ShoppingCard } from "./ShoppingCard"
 import { CarouselType, ItemProps, CarouselProps } from "../app/types";
 import { populateCarousel } from "@/app/db";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
+import { Skeleton } from "./ui/skeleton";
+import { Card, CardContent } from "./ui/card";
+import { CarouselPlaceholder } from "./CarouselPlaceholder";
 
 
 export default function MainPageCaroseul({ title, ctype}: CarouselProps) {
   const [items, setItems] = useState<ItemProps[]>([])
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     async function fetchItems(){
+      setLoading(true)
       const tempItems = await populateCarousel(ctype)
       console.log(tempItems);
       if(tempItems) setItems(tempItems)
+      setLoading(false)
     }
     fetchItems()
   }, [])
@@ -30,17 +36,26 @@ export default function MainPageCaroseul({ title, ctype}: CarouselProps) {
           <Carousel className="space-x-4 align-middle -ml-4">
             <CarouselPrevious className="max-sm:hidden" />
             <CarouselContent className="*:text-blue-400 *:text-xl *:justify center ">
-              {items.map((item, index) => (
-                <CarouselItem className="md:basis-1/4 sm:basis-1/2" key={index}>
-                  <ShoppingCard
-                    name={item.name}
-                    image={item.image || ""}
-                    price={+item.price}
-                    rating={item.rating}
-                    id={item.id}
-                  />
-                </CarouselItem>
-              ))}
+              { !loading ?
+                  items.map((item, index) => (
+                    <CarouselItem className="md:basis-1/4 sm:basis-1/2" key={index}>
+                      <ShoppingCard
+                        name={item.name}
+                        image={item.image || ""}
+                        price={+item.price}
+                        rating={item.rating}
+                        id={item.id}
+                      />
+                    </CarouselItem>
+                  ))
+                  :
+                  <>
+                    <CarouselPlaceholder key={1}/>
+                    <CarouselPlaceholder key={2}/>
+                    <CarouselPlaceholder key={3}/>
+                    <CarouselPlaceholder key={4}/>
+                  </>
+              }
             </CarouselContent>
             <CarouselNext className="max-sm:hidden" />
           </Carousel>

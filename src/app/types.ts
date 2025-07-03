@@ -24,3 +24,8 @@ export interface CarouselProps{
   title: string
   ctype: CarouselType
 }
+
+export interface shoppingButtonType{
+    id: string,
+    name: string
+}

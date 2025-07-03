@@ -49,8 +49,8 @@ export default function ItemPage({
       </>
       :
       <>
-        <div className="flex flex-row">
-          <img src={item?.image ? item.image : "https://cdn.gcdn.space/Guests/d42ca99e_floppa.webp"} className="h-2xl w-2xl rounded-4xl p-5"/>
+        <div className="flex flex-row max-sm:flex-col">
+          <img src={item?.image ? item.image : "https://cdn.gcdn.space/Guests/d42ca99e_floppa.webp"} className="h-2xl w-2xl rounded-4xl p-5 aspect-video"/>
           <div className="flex flex-col gap-5">
             <p className="text-8xl font-black">{item?.name}</p>
             {
@@ -65,7 +65,7 @@ export default function ItemPage({
             </div>
             <div className="flex flex-row gap-9">
               <p className="text-3xl">{"Stock: "+item?.stock}</p>
-              <ShoppingButton id={item?.id}/>
+              <ShoppingButton id={item?.id} name={item.name}/>
             </div>
           </div>
         </div>

@@ -28,18 +28,20 @@ interface CardProps {
 
 export function ShoppingCard({ image, name, rating, price, id }:CardProps) {
   return (
-    <Card className="max-w-xs p-5">
+    <Card className="w-xs h-xs p-3 gap-2">
             <a href={"/items/"+id} className="font-bold text-2xl justify-self-center truncate hover:underline">
-              <img src={image} className="w-max h-max rounded-lg mb-4"/>
-              <p>{name}</p>
+              <img src={image} width={256} height={256} alt="Shop Item" className="s-[256px] overflow-hidden justify-self-center rounded-2xl aspect-video"/>
             </a>
+            <div className="flex-col flex">
+            <a href={"/items/"+id} className="font-bold text-2xl justify-self-center truncate hover:underline">{name}</a>
+                <div className="flex flex-initial flex-row items-center content-center *:text-base">
+                    <FontAwesomeIcon icon={faStar} className="text-orange-500"/>
+                    <p className="font-semibold">{rating}</p>
+                </div>
+              </div>
             <div className="flex flex-row place-content-evenly gap-0.5">
-                    <div className="flex flex-initial flex-row items-center content-center *:text-2xl">
-                        <FontAwesomeIcon icon={faStar} className="text-orange-500"/>
-                        <p className="font-semibold">{rating}</p>
-                    </div>
-                    <p className="font-black text-5xl self-center">${price}</p>
-                    <ShoppingButton id={id} />
+                    <p className="font-black text-3xl self-center">${price}</p>
+                    <ShoppingButton id={id} name={name} />
             </div>
     </Card>
   )

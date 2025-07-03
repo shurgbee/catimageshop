@@ -1,15 +1,10 @@
 'use client'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { ShoppingCard } from "../../../components/ShoppingCard"
 import MainPageCarousel from "../../../components/MainPageCaroseul"
-import { ItemProps, getItemFromID } from "@/app/db";
+import {getItemFromID } from "@/app/db";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Main } from "next/document";
 import { ShoppingButton } from "@/components/ShoppingButton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CarouselType, ItemProps } from "../../types";
 
 export default function ItemPage({
   params,
@@ -49,7 +44,7 @@ export default function ItemPage({
           </div>
         </div>
       <div className="pt-[10vh]">
-        <MainPageCarousel title={"More like this one"} ctype={"new"}/>
+        <MainPageCarousel title={"More like this one"} ctype={CarouselType.new}/>
       </div>
       </>
       :
@@ -75,7 +70,7 @@ export default function ItemPage({
           </div>
         </div>
       <div className="pt-[10vh]">
-        <MainPageCarousel title={"More like this one"} ctype={"new"}/>
+        <MainPageCarousel title={"More like this one"} ctype={CarouselType.new}/>
       </div>
       </>
     }

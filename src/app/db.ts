@@ -1,27 +1,11 @@
 'use server'
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { ilike, and, gt, sql } from 'drizzle-orm';
+import { ilike, and, gt, sql, desc, asc } from 'drizzle-orm';
 import { shoppingitems } from '../../drizzle/schema';
+import { AutoCompleteProps, CarouselType, ItemProps } from './types';
 
 const db = drizzle(process.env.DATABASE_URL!);
-
-export interface AutoCompleteProps{
-    name: string
-    image: string | null
-    id: string 
-}
-
-export interface ItemProps{
-    name: string,
-    image: string | null,
-    rating: number,
-    price: string,
-    description: string | null,
-    stock: number,
-    dateuploaded: string,
-    id: string
-}
 
 export async function autocomplete(text: string) : Promise<AutoCompleteProps[]> {
     const items: AutoCompleteProps[] = await db.select({
@@ -48,3 +32,38 @@ export async function getItemFromID(id: string) : Promise<ItemProps> {
     console.log('ran')
     return items[0];
 } 
+
+export async function populateCarousel(carouselType: CarouselType) : Promise<ItemProps[]> {
+    var items: ItemProps[] = []
+    switch(carouselType) {
+        case CarouselType.leavingSoon:
+            items = await db.select({
+                name: shoppingitems.name,
+                image: shoppingitems.image,
+                rating: shoppingitems.rating,
+                price: shoppingitems.price,
+                description: shoppingitems.description,
+                stock: shoppingitems.stock,
+                dateuploaded: shoppingitems.dateuploaded,
+                id: shoppingitems.id
+            }).from(shoppingitems).orderBy(asc(shoppingitems.stock)).limit(6);
+            break;
+        case CarouselType.new:
+            items = await db.select({
+                name: shoppingitems.name,
+                image: shoppingitems.image,
+                rating: shoppingitems.rating,
+                price: shoppingitems.price,
+                description: shoppingitems.description,
+                stock: shoppingitems.stock,
+                dateuploaded: shoppingitems.dateuploaded,
+                id: shoppingitems.id
+            }).from(shoppingitems).orderBy(desc(shoppingitems.dateuploaded)).limit(6);
+            break;
+        default:
+            throw new Error("Unable to handle CarouselType")
+            break;
+        }
+    console.log('ran')
+    return items;
+}

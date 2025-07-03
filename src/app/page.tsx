@@ -1,13 +1,14 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { ShoppingCard } from "../components/ShoppingCard"
-import MainPageCarousel from "../components/MainPageCaroseul"
+import MainPageCarousel from "../components/MainPageCaroseul";
+import { CarouselType } from "./types";
+import { populateCarousel } from "./db";
 
 export default function Home() {
+
   return (
     <>
       <h1 className="text-8xl font-black py-3">Welcome In!</h1>
-      <MainPageCarousel title="New In Shop" ctype="new"/>
-      <MainPageCarousel title="Leaving Soon! 🔥" ctype="leaving"/>
+      <MainPageCarousel title="New In Shop" ctype={CarouselType.new}/>
+      <MainPageCarousel title="Leaving Soon! 🔥" ctype={CarouselType.leavingSoon}/>
     </>
   );
 }

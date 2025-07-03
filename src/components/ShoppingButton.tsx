@@ -22,6 +22,7 @@ export function ShoppingButton({id}: stupidType) {
         }
         parsedCart.totalCount += 1;
         localStorage.setItem("CISCart", JSON.stringify(parsedCart))
+        window.dispatchEvent( new CustomEvent("CIScartChanged"))
     }
   return (
         <Button className="self-center" size="lg" onClick={() => ButtonFunc(id)}>

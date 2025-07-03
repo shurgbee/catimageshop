@@ -1,14 +1,14 @@
 'use client'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ShoppingCard } from "../../components/ShoppingCard"
-import MainPageCarousel from "../../components/MainPageCaroseul"
 import { useEffect, useState } from "react";
-import { getItemFromID, ItemProps } from "../db";
+import { getItemFromID} from "../db";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faBasketShopping, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ItemProps } from '../types'
 
 export default function Checkout() {
   const [loading, setLoading] = useState(true)
@@ -41,40 +41,50 @@ export default function Checkout() {
   }
 
   function countChanger(incrementVal: number, id: string){
-    const oldInt = cart.get(id)
+    const oldInt = cart?.get(id) ?? 0
     if(oldInt + incrementVal == 0) deleteFromCart(id)
     if(oldInt + incrementVal > 0){
       const newCart = new Map(cart)
       console.log(oldInt)
       newCart.set(id, oldInt + incrementVal)
       setCart(newCart)
-      var currentCart = JSON.parse(localStorage.getItem('CISCart'))
-      currentCart['items'] = Object.fromEntries(newCart)
+      const currentCartStr = localStorage.getItem("CISCart")
+      if (currentCartStr) var currentCart = JSON.parse(currentCartStr)
+      if(currentCart != null) {
+        currentCart['items'] = Object.fromEntries(newCart)
+        currentCart['totalCount'] += incrementVal
+      }
       localStorage.setItem('CISCart', JSON.stringify(currentCart))
-
+      window.dispatchEvent(new CustomEvent("CIScartChanged"))
       console.log(newCart)
     }
   }
 
   function deleteFromCart(id: string){
     const newCart = new Map(cart)
+    const idCount = newCart?.get(id)
     newCart.delete(id)
     setCart(newCart)
-    var currentCart = JSON.parse(localStorage.getItem('CISCart'))
-    currentCart['items'] = Object.fromEntries(newCart)
+    const currentCartStr = localStorage.getItem("CISCart")
+    if (currentCartStr) var currentCart = JSON.parse(currentCartStr)
+    if(currentCart != null) {
+      currentCart['items'] = Object.fromEntries(newCart)
+      currentCart['totalCount'] -= idCount ?? 0
+    }
     localStorage.setItem('CISCart', JSON.stringify(currentCart))
     console.log(newCart)
+        window.dispatchEvent( new CustomEvent("CIScartChanged"))
   }
   return (
     <>
       <h1 className="text-8xl font-black py-3 text-center">Da Checkout Page</h1>
       <Card className="w-4xl place-self-center mt-9">
         {!loading ? (
-          items && items?.filter((item) => cart?.get(item.id) > 0).length > 0 ? (
+          items && items?.filter((item) => cart?.get(item.id) ?? 0 > 0).length > 0 ? (
             <>
               <CardContent className="flex flex-col gap-4">
                 {items
-                  ?.filter((item) => cart?.get(item.id) > 0)
+                  ?.filter((item) => cart?.get(item.id) ?? 0 > 0)
                   .map((item, index) => (
                     <Card key={index} className="flex flex-row items-center">
                       {item.image ? (

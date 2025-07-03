@@ -2,13 +2,14 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ShoppingCard } from "../../../components/ShoppingCard"
 import MainPageCarousel from "../../../components/MainPageCaroseul"
-import { ItemProps, populateItemPage } from "@/app/db";
+import { ItemProps, getItemFromID } from "@/app/db";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Main } from "next/document";
 import { ShoppingButton } from "@/components/ShoppingButton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ItemPage({
   params,
@@ -23,7 +24,7 @@ export default function ItemPage({
     async function fetchItem() {
       setLoading(true);
       const { slug } = await params;
-      const realItem = await populateItemPage(slug);
+      const realItem = await getItemFromID(slug);
       setItem(realItem);
       setLoading(false);
     }
@@ -34,14 +35,29 @@ export default function ItemPage({
     {
       loading ? 
       <>
-        <h1 className="text-8xl font-black py-3">This is where da items are</h1>
+        <div className="flex flex-row p-5">
+          <Skeleton className="h-2xl w-2xl rounded-4xl p-5"/>
+          <div className="flex flex-col gap-5 p-5">
+            <Skeleton className="h-[128px] w-lg" />
+            <div className="flex flex-row">
+              <Skeleton className="h-[72px] w-md" />
+              {/* <p className="self-center">Increase amount</p> */}
+            </div>
+            <div className="flex flex-row gap-9">
+              <Skeleton className="h-[30px] w-md" />
+            </div>
+          </div>
+        </div>
+      <div className="pt-[10vh]">
+        <MainPageCarousel title={"More like this one"} ctype={"new"}/>
+      </div>
       </>
       :
       <>
         <div className="flex flex-row">
           <img src={item?.image ? item.image : "https://cdn.gcdn.space/Guests/d42ca99e_floppa.webp"} className="h-2xl w-2xl rounded-4xl p-5"/>
           <div className="flex flex-col gap-5">
-            <p className="text-9xl font-black">{item?.name}</p>
+            <p className="text-8xl font-black">{item?.name}</p>
             {
               item?.description ? 
                 <p className="text-lg">{item?.description ? item.description : ""}</p>

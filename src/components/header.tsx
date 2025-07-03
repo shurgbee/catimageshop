@@ -29,7 +29,7 @@ import { Badge } from "./ui/badge";
 export default function Header() {
   const [value, setValue] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [searchRes, setSearchRes] = useState<AutoCompleteProps[]>([])
 
   async function Autocomplete(text: string){
@@ -83,7 +83,7 @@ export default function Header() {
                 </PopoverContent>
               </Popover>
         </Command>
-        <a href="/" className="p-2">
+        <a href="/checkout" className="p-2">
             <FontAwesomeIcon icon={faShoppingCart} className=""/>
         </a>
     </div>

@@ -14,16 +14,17 @@ export function ShoppingButton({id}: stupidType) {
         const cart = localStorage.getItem("CISCart");
         let parsedCart: { [key: string]: any } = cart ? JSON.parse(cart) : {};
         if (!parsedCart.totalCount) parsedCart.totalCount = 0;
-        if (parsedCart[id]) {
-        parsedCart[id].count += 1;
+        if (!parsedCart['items']) parsedCart['items'] = {};
+        if (parsedCart['items'][id]) {
+        parsedCart['items'][id] += 1;
         } else {
-        parsedCart[id] = { count: 1 };
+        parsedCart['items'][id] = 1; 
         }
         parsedCart.totalCount += 1;
         localStorage.setItem("CISCart", JSON.stringify(parsedCart))
     }
   return (
-        <Button className="self-center" onClick={() => ButtonFunc(id)}>
+        <Button className="self-center" size="lg" onClick={() => ButtonFunc(id)}>
             <p className="inline">Add to Cart</p>
             <FontAwesomeIcon icon={faCartPlus}></FontAwesomeIcon>
         </Button>

@@ -34,7 +34,7 @@ export async function autocomplete(text: string) : Promise<AutoCompleteProps[]> 
 }
 
 //TODO: Price Should not be string????? Why does it do this?
-export async function populateItemPage(id: string) : Promise<ItemProps> {
+export async function getItemFromID(id: string) : Promise<ItemProps> {
     const items: ItemProps[] = await db.select({
         name: shoppingitems.name,
         image: shoppingitems.image,
@@ -45,21 +45,6 @@ export async function populateItemPage(id: string) : Promise<ItemProps> {
         dateuploaded: shoppingitems.dateuploaded,
         id: shoppingitems.id
     }).from(shoppingitems).where(ilike(sql`${shoppingitems.id}::text`, `%${id}%`)).limit(1);
-    console.log("items: "+items)
-    return items[0];
-} 
-
-export async function populateCaroseul() : Promise<ItemProps> {
-    const items: ItemProps[] = await db.select({
-        name: shoppingitems.name,
-        image: shoppingitems.image,
-        rating: shoppingitems.rating,
-        price: shoppingitems.price,
-        description: shoppingitems.description,
-        stock: shoppingitems.stock,
-        dateuploaded: shoppingitems.dateuploaded,
-        id: shoppingitems.id
-    }).from(shoppingitems).where(ilike(sql`${shoppingitems.id}::text`, `%${id}%`)).limit(1);
-    console.log("items: "+items)
+    console.log('ran')
     return items[0];
 } 

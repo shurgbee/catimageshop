@@ -1,9 +1,9 @@
 'use server'
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { ilike, and, gt, sql, desc, asc } from 'drizzle-orm';
+import { ilike, and, gt, sql, desc, asc, inArray, eq, like } from 'drizzle-orm';
 import { shoppingitems } from '../db/schema';
-import { AutoCompleteProps, CarouselType, ItemProps } from './types';
+import { AutoCompleteProps, CarouselType, CartType, ItemProps, stockType } from './types';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -46,7 +46,7 @@ export async function populateCarousel(carouselType: CarouselType) : Promise<Ite
                 stock: shoppingitems.stock,
                 dateuploaded: shoppingitems.dateuploaded,
                 id: shoppingitems.id
-            }).from(shoppingitems).orderBy(asc(shoppingitems.stock)).limit(6);
+            }).from(shoppingitems).where(gt(shoppingitems.stock, 0)).orderBy(asc(shoppingitems.stock)).limit(6);
             break;
         case CarouselType.new:
             items = await db.select({
@@ -58,7 +58,7 @@ export async function populateCarousel(carouselType: CarouselType) : Promise<Ite
                 stock: shoppingitems.stock,
                 dateuploaded: shoppingitems.dateuploaded,
                 id: shoppingitems.id
-            }).from(shoppingitems).orderBy(desc(shoppingitems.dateuploaded)).limit(6);
+            }).from(shoppingitems).where(gt(shoppingitems.stock, 0)).orderBy(desc(shoppingitems.dateuploaded)).limit(6);
             break;
         default:
             throw new Error("Unable to handle CarouselType")
@@ -66,4 +66,16 @@ export async function populateCarousel(carouselType: CarouselType) : Promise<Ite
         }
     console.log('ran')
     return items;
+}
+
+export async function removeStock(cartType: CartType) {
+    const stockCounts: stockType[] = await db.select({
+        stock: shoppingitems.stock,
+        id: shoppingitems.id
+    }).from(shoppingitems).where(inArray(shoppingitems.id,Object.keys(cartType.items)))
+    await Promise.all(
+    stockCounts.map( item => db.update(shoppingitems)
+    .set({stock: item.stock - cartType.items[item.id]})
+    .where(ilike(sql`${shoppingitems.id}::text`, `%${item.id}%`)))
+)
 }

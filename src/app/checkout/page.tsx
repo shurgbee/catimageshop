@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from "react";
-import { getItemFromID} from "../db";
+import { getItemFromID, removeStock} from "../db";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faBasketShopping, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ItemProps } from '../types'
+import { CartType, ItemProps } from '../types'
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -76,8 +76,14 @@ export default function Checkout() {
         window.dispatchEvent( new CustomEvent("CIScartChanged"))
   }
 
-  function CheckoutButton(){
+  async function CheckoutButton(){
     toast.success("Successfully checked out cart for $"+finalPrice())
+    const currentCartStr = localStorage.getItem("CISCart")
+    const currentCart = JSON.parse(currentCartStr ?? "")
+    if(currentCart && currentCart != "{}") {
+      const castCart : CartType = currentCart
+      await removeStock(castCart)
+    }
     const newCart = new Map()
     setCart(newCart)
     localStorage.setItem('CISCart', JSON.stringify(newCart))

@@ -34,3 +34,8 @@ export interface shoppingButtonType{
     id: string,
     name: string
 }
+
+export interface stockType{
+    stock: number,
+    id: string
+}

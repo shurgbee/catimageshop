@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# About this project
+This project is meant to be a template for a shop template and a submission towards the YSWS Reactive event. It uses Next.js and Shadcn to built out a store template that reads a Postgres Database using Drizzle ORM.
 
 ## Getting Started
 
